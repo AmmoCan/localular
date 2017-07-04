@@ -25,7 +25,7 @@ sudo apachectl restart
 
 **Additionally, for all sub-directories to use the Localular theme, you need to copy and paste both the `index.php` file and the `localular` folder in the root of each sub-directory.**
 
-##Features
+## Features
 > Responsive modern aesthetics
 
 > Icons by file type
