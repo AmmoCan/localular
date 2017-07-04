@@ -1,0 +1,141 @@
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /localular/
+</IfModule>
+
+## STRONG HTACCESS PROTECTION ##
+<Files ~ "^.*\.([Hh][Tt][Aa])">
+  order allow,deny
+  deny from all
+</Files>
+## STRONG HTACCESS PROTECTION ##
+
+## EXPIRES CACHING ##
+<IfModule mod_expires.c>
+  # Turn on Expires and set default to 0
+  ExpiresActive On
+  ExpiresDefault A0
+  
+  # Set up caching on media files for 1 year (forever?)
+  <FilesMatch ".(flv|ico|pdf|avi|mov|ppt|doc|mp3|wmv|wav)$">
+    ExpiresDefault A29030400
+    Header append Cache-Control "public"
+  </FilesMatch>
+  
+  # Set up caching on media files for 1 week
+  <FilesMatch ".(gif|jpg|jpeg|png|swf|ttf|eot|svg|otf|woff|woff2)$">
+    ExpiresDefault A604800
+    Header append Cache-Control "public"
+  </FilesMatch>
+  
+  # Set up 2 Hour caching on commonly updated files
+  <FilesMatch ".(xml|txt|html|js|css)$">
+    ExpiresDefault A604800
+    Header append Cache-Control "proxy-revalidate"
+  </FilesMatch>
+  
+  # Force no caching for dynamic files
+  <FilesMatch ".(php|cgi|pl|htm)$">
+    ExpiresActive Off
+    Header set Cache-Control "private, no-cache, no-store, proxy-revalidate, no-transform"
+    Header set Pragma "no-cache"
+  </FilesMatch>
+</IfModule>
+## EXPIRES CACHING ##
+
+<IfModule mod_deflate.c>
+	# compress text, HTML, JavaScript, CSS, and XML
+	AddOutputFilterByType DEFLATE text/plain
+	AddOutputFilterByType DEFLATE text/html
+	AddOutputFilterByType DEFLATE text/xml
+	AddOutputFilterByType DEFLATE text/css
+	AddOutputFilterByType DEFLATE application/xml
+	AddOutputFilterByType DEFLATE application/xhtml+xml
+	AddOutputFilterByType DEFLATE application/rss+xml
+	AddOutputFilterByType DEFLATE application/javascript
+	AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+<IfModule mod_mime.c>
+	AddType application/zip .zip
+	AddType application/x-gzip .gz .gzip
+	AddType application/x-shockwave-flash .swf
+	AddType application/x-tar .tar
+	AddType application/x-font-ttf .ttc .ttf
+  AddType application/x-font-otf .otf
+  AddType application/font-woff .woff
+  AddType application/font-woff2 .woff2
+  AddType application/vnd.ms-fontobject .eot
+  AddType application/vnd.ms-write .wri
+	AddType application/vnd.ms-excel .xla .xls .xlsx .xlt .xlw
+	AddType application/msword .doc .docx
+	AddType application/x-msdownload .exe
+	AddType application/vnd.ms-project .mpp
+	AddType application/vnd.ms-powerpoint .pot .pps .ppt .pptx
+	AddType application/vnd.ms-access .mdb
+  AddType application/pdf .pdf
+  AddType application/json .json
+  AddType application/x-javascript .js
+	AddType application/javascript .js2
+  AddType application/java .class
+  
+  AddType audio/wav .wav
+	AddType audio/wma .wma
+	AddType audio/x-realaudio .ra .ram
+	AddType audio/ogg .ogg
+	AddType audio/midi .mid .midi
+	AddType audio/mpeg .mp3 .m4a
+	
+	AddType image/gif .gif
+	AddType image/x-icon .ico
+	AddType image/jpeg .jpg .jpeg .jpe
+	AddType image/png .png
+	AddType image/tiff .tif .tiff
+	AddType image/svg+xml .svg .svgz
+	AddType image/bmp .bmp
+	
+	AddType text/css .css
+	AddType text/x-component .htc
+	AddType text/javascript .js3
+	AddType text/x-js .js4
+	AddType text/html .html .htm
+	AddType text/richtext .rtf .rtx
+	AddType text/plain .txt
+	AddType text/xsd .xsd
+	AddType text/xsl .xsl
+	AddType text/xml .xml
+	
+	AddType video/asf .asf .asx .wax .wmv .wmx
+	AddType video/avi .avi
+	AddType video/divx .divx
+	AddType video/mp4 .mp4 .m4v
+	AddType video/mpeg .mpeg .mpg .mpe
+	AddType video/quicktime .mov .qt
+</IfModule>
+
+<IfModule mod_headers.c>
+	Header set X-UA-Compatible "IE=Edge,chrome=1"
+	Header set Connection Keep-Alive
+	<FilesMatch "\.(js|jpeg|ico|gif|jpg|png|css|xml|htm|html|less|pdf|txt|rar|doc)$">
+		Header unset X-UA-Compatible
+	</FilesMatch>
+</IfModule>
+
+## ETag REMOVAL ##
+# FileETag None is not enough for every server.
+<IfModule mod_headers.c>
+	Header unset ETag
+</IfModule>
+
+# Since we're sending far-future expires, we don't need ETags for
+# static content.
+# developer.yahoo.com/performance/rules.html#etags
+FileETag None
+## ETag REMOVAL ##
+	
+## REMOVE BROWSER BUGS ##
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4\.0[678] no-gzip
+BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+Header append Vary User-Agent
+## REMOVE BROWSER BUGS ##

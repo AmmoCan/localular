@@ -1,0 +1,43 @@
+  <section class="tool-bar grid-block small-up-1 medium-up-3">
+      
+    <span class="fa fa-search" aria-hidden="true"></span>
+		<input type="text" id="search" class="form-control" placeholder="Search project" ng-model="$ctrl.search">
+	
+  	<div class="total">
+    	<span>Found {{($ctrl.projects | filter:$ctrl.search).length}} of {{$ctrl.projects.length}} Projects</span>
+  	</div>
+	
+    <div class="date-filter">
+  		<a href="" title="Filter by date" ng-class="(byDate) ? 'active' : '' " ng-click="reverse=!reverse;$ctrl.order('date_format', reverse);byName=false;byDate=true;">Date</a>
+  	</div>
+  	
+  	<div class="name-filter">
+      <a href="" title="Filter by name" ng-class="(byName) ? 'active' : '' " ng-click="reverse=false;$ctrl.order('file', false);byName=true;byDate=false;">Name</a>
+  	</div>
+
+  </section>
+  
+  <div class="line">
+    <hr/>
+  </div>
+	
+  <section class="project-list grid-block small-up-1 medium-up-3">
+    <div class="project-wrap grid-content" ng-repeat="project in (filteredItems = ($ctrl.projects | filter: $ctrl.search))" ng-class="($index == 0) ? 'active' : '' ; ">
+      
+      <div class="card">
+        <span class="fa-stack fa-3x">
+          <i class="fa fa-circle fa-stack-2x" aria-hidden="true"></i>
+          <i class="{{project.icon}} fa-stack-1x fa-inverse" aria-hidden="true"></i>
+        </span>
+        <!-- <i class="{{project.icon}}" aria-hidden="true"></i> -->
+        <div class="card-divider">
+          <a href="//{{project.server}}{{project.file}}/" title="{{project.file}}">{{project.file}}</a>
+        </div>
+        <div class="card-section">
+          <span>Last modified:</span>
+          <time>{{project.date}}</time>
+        </div>
+      </div>
+      
+    </div>
+  </section>
